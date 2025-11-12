@@ -5,6 +5,8 @@ from langchain.tools import Tool,tool
 from datetime import datetime
 import requests
 import os
+import json 
+import re
 
 @tool("searxng_search", return_direct=False)
 def searxng_search(query: str, api_url: Optional[str] = None) -> Dict[str, Any]:
@@ -40,23 +42,23 @@ def searxng_search(query: str, api_url: Optional[str] = None) -> Dict[str, Any]:
         )
         response.raise_for_status()
         data = response.json()
-
         results_raw: List[Dict[str, Any]] = data.get("results", [])
-
         if not results_raw:
-            return {"output": {"output": "No results found."}}
-
-        formatted_results: List[Dict[str, str]] = []
+            return json.dumps({"error": "No results found."})
+        formatted_results: List[Dict[str, Any]] = []
+        # Extract article number from query if present (e.g., "المادة 147" -> 147)
+        article_match = re.search(r'\b(\d+)\b', query)  # Simple regex for digits
+        article_number = int(article_match.group(1)) if article_match else None
         for result in results_raw[:5]:
             formatted_results.append({
                 "title": result.get("title", "No Title"),
                 "url": result.get("url", "No URL"),
-                "snippet": result.get("content", "No Snippet")
+                "snippet": result.get("content", "No Snippet"),
+                "article_number": article_number  # Include as int if extracted
             })
-
-        return {"output": {"output": formatted_results}}
+        return json.dumps({"results": formatted_results})  # Return JSON string
 
     except requests.exceptions.RequestException as e:
-        return {"output": {"output": f"Error during search: {str(e)}"}}
+        return json.dumps({"error": f"Error during search: {str(e)}"})
 
 search_tool=searxng_search

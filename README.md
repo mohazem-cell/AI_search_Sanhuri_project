@@ -1,1 +1,2 @@
 # AI_search_Sanhuri_project
+This project is an AI-powered search assistant that leverages multiple tools and large language models (LLMs) to provide comprehensive search results and summaries. It integrates with Searxng for web searches and Groq for advanced language processing.

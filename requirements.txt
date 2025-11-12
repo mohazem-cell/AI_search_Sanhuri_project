@@ -22,3 +22,6 @@ pydantic
 anthropic
 langchain-core
 duckduckgo-search
+fastapi
+uvicorn
+requests
