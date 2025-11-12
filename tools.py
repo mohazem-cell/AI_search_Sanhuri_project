@@ -29,6 +29,7 @@ def searxng_search(query: str, api_url: Optional[str] = None) -> Dict[str, Any]:
                         - 'results': a list of dictionaries with 'title', 'url', and 'snippet' of each document
                         - or an 'error' message if no results are found or a network issue occurs.
     """
+    # api_url = api_url or os.getenv("SEARXNG_URL")
     api_url = "https://google.com"
 
     try:
