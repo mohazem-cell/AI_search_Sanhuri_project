@@ -20,7 +20,6 @@ class ResearchResponse(BaseModel):
 api_key = os.getenv("GROQ_API_KEY")
 if not api_key:
     raise ValueError("❌ GROQ_API_KEY not found. Please set it in your .env file or environment variables.")
-# print("dfiejefiejfiejfiejfiejifiefiejfie")
 
 llm2 = ChatOpenAI(
     model="openai/gpt-oss-20b",
